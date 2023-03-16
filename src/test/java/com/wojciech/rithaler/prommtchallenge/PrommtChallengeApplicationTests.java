@@ -141,7 +141,7 @@ class PrommtChallengeApplicationTests {
 				.andReturn();
 
 		String responseJson = resultResponse.getResponse().getContentAsString();
-		assertEquals("2", responseJson);
+		assertEquals("{\"deletedId\":2}", responseJson);
 	}
 
 }
