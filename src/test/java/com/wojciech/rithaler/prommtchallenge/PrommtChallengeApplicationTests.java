@@ -1,28 +1,26 @@
 package com.wojciech.rithaler.prommtchallenge;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wojciech.rithaler.prommtchallenge.Entity.Payment;
-import com.wojciech.rithaler.prommtchallenge.Entity.Status;
 import com.wojciech.rithaler.prommtchallenge.Repository.PaymentRepository;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.time.ZonedDateTime;
-import java.util.Currency;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 class PrommtChallengeApplicationTests {
@@ -41,37 +39,109 @@ class PrommtChallengeApplicationTests {
 	private MockMvc mockMvc;
 
 	@Test
-	void contextLoads() {
-	}
+	void contextLoads() {}
 
-	@Test
-	void postEndpointShouldCreatePayment() throws Exception {
-		ObjectMapper objectMapper = new ObjectMapper();
+	private void createPayment() throws Exception {
 		String newPaymentJson = "{\"payer_email\": \"email@email.com\", \"currency\": \"USD\", \"amount\": 420.69}";
 		mockMvc.perform(post(BASE_URL)
 				.contentType(APPLICATION_JSON_UTF8)
 				.content(newPaymentJson))
 				.andExpect(status().isCreated());
 	}
-
 	@Test
-	void getEndpointShouldRetrievePayment() throws Exception {
-		String url = BASE_URL + "/1";
-		Payment expectedResult =
-				new Payment(1L, ZonedDateTime.now(), "email@email.com",
-						Status.UNPAID, Currency.getInstance("USD"), 420.69, null);
+	@Order(1)
+	void postEndpointShouldCreatePayment() throws Exception {
+		ObjectMapper objectMapper = new ObjectMapper();
+		createPayment();
 
-		MvcResult result = mockMvc.perform(get(url)
-				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().isOk())
-				.andExpect(resultBody -> resultBody.equals(expectedResult))
-				.andReturn();
+		assertTrue(repository.findById(1L).isPresent());
 	}
 
 	@Test
+	@Order(2)
+	void getEndpointShouldRetrievePayment() throws Exception {
+		String url = BASE_URL + "/1";
+
+		MvcResult resultResponse = mockMvc.perform(get(url)
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		String responseJson = resultResponse.getResponse().getContentAsString();
+		assertTrue(responseJson.contains("\"id\":1"));
+	}
+
+	@Test
+	@Order(3)
 	void getEndpointShouldReturnNotFound() throws Exception {
 		String url = BASE_URL + "/2";
-		mockMvc.perform(get(url).contentType(APPLICATION_JSON_UTF8)).andExpect(status().isNotFound());
+		mockMvc.perform(get(url)
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	@Order(4)
+	void putEndpointShouldUpdatePayment() throws Exception {
+		String url = BASE_URL + "/1";
+
+		MvcResult resultResponse = mockMvc.perform(put(url)
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		String responseJson = resultResponse.getResponse().getContentAsString();
+		assertTrue(responseJson.contains("\"id\":1") && responseJson.contains("\"status\":\"PAID\""));
+	}
+
+	@Test
+	@Order(5)
+	void putEndpointShouldNotFindPayment() throws Exception {
+		String url = BASE_URL + "/2";
+
+		mockMvc.perform(put(url)
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	@Order(6)
+	void deleteEndpointShouldNotFindPayment() throws Exception {
+		String url = BASE_URL + "/2";
+
+		mockMvc.perform(delete(url)
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	@Order(7)
+	void deleteEndpointShouldNotDeletePaidPayment() throws Exception {
+		String url = BASE_URL + "/1";
+
+		MvcResult resultResponse = mockMvc.perform(delete(url)
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isBadRequest())
+				.andReturn();
+
+		String responseJson = resultResponse.getResponse().getContentAsString();
+		System.out.println(">>>" + responseJson);
+	}
+
+	@Test
+	@Order(8)
+	void deleteEndpointShouldDeleteUnpaidPayment() throws Exception {
+		String url = BASE_URL + "/2";
+
+		createPayment();
+
+		MvcResult resultResponse = mockMvc.perform(delete(url)
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		String responseJson = resultResponse.getResponse().getContentAsString();
+		assertEquals("2", responseJson);
 	}
 
 }

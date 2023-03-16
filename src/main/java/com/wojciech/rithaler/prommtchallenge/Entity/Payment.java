@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+import lombok.extern.jackson.Jacksonized;
 
 import java.time.ZonedDateTime;
 import java.util.Currency;
@@ -15,8 +16,7 @@ import java.util.Currency;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Getter
-@Setter
+@Data
 @ToString
 @EqualsAndHashCode
 public class Payment {
@@ -35,15 +35,15 @@ public class Payment {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     ZonedDateTime paid_date;
 
-    public PaymentDTO createDto() {
-        return new PaymentDTO(
-                this.ID,
-                this.created_date,
-                this.payer_email,
-                this.status,
-                this.currency,
-                this.amount,
-                this.paid_date
-        );
-    }
+//    public PaymentDTO createDto() {
+//        return new PaymentDTO(
+//                this.ID,
+//                this.created_date,
+//                this.payer_email,
+//                this.status,
+//                this.currency,
+//                this.amount,
+//                this.paid_date
+//        );
+//    }
 }

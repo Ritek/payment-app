@@ -1,11 +1,7 @@
 package com.wojciech.rithaler.prommtchallenge.DTO;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wojciech.rithaler.prommtchallenge.Entity.Status;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.ZonedDateTime;
 import java.util.Currency;

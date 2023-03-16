@@ -1,8 +1,8 @@
 package com.wojciech.rithaler.prommtchallenge.DTO;
 
-import com.wojciech.rithaler.prommtchallenge.Entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.ToString;
 
 import java.util.Currency;
@@ -11,7 +11,7 @@ import java.util.Currency;
 @AllArgsConstructor
 @ToString
 public class NewPaymentDTO {
-    String payer_email;
-    Currency currency;
-    Double amount;
+    @NonNull String payer_email;
+    @NonNull Currency currency;
+    @NonNull Double amount;
 }
