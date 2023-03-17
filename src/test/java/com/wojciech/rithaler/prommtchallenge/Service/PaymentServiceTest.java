@@ -14,7 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.ZonedDateTime;
+import java.math.BigDecimal;
+import java.time.*;
 import java.util.Currency;
 import java.util.Locale;
 import java.util.Optional;
@@ -26,22 +27,22 @@ import static org.mockito.Mockito.when;
 public class PaymentServiceTest {
     Payment EXAMPLE_UNPAID_PAYMENT = new Payment(
             1L,
-            ZonedDateTime.now(),
+            LocalDateTime.now(),
             "email@email.com",
             Status.UNPAID,
             Currency.getInstance(Locale.US),
-            420.69,
+            new BigDecimal("420.69"),
             null
     );
 
     Payment EXAMPLE_PAID_PAYMENT = new Payment(
             1L,
-            ZonedDateTime.now(),
+            LocalDateTime.now(),
             "email@email.com",
             Status.PAID,
             Currency.getInstance(Locale.US),
-            420.69,
-            ZonedDateTime.now()
+            new BigDecimal("420.69"),
+            LocalDateTime.now()
     );
 
     @Mock
@@ -52,9 +53,10 @@ public class PaymentServiceTest {
 
     @BeforeEach
     void init() {
-        paymentBuilder = new PaymentBuilder();
+        Clock clock = Clock.fixed(Instant.parse("2023-01-01T10:00:00Z"), ZoneOffset.UTC);
+        paymentBuilder = new PaymentBuilder(clock);
         paymentDtoCreator = new PaymentDtoCreator();
-        paymentService = new PaymentService(paymentRepository, paymentBuilder, paymentDtoCreator);
+        paymentService = new PaymentService(paymentRepository, paymentBuilder, paymentDtoCreator, clock);
     }
 
     @Test
@@ -69,13 +71,25 @@ public class PaymentServiceTest {
     }
 
     @Test
-    void shouldNotUpdatePayment() {
+    void shouldNotFindPaymentToUpdate() {
         // when
         when(paymentRepository.findById(1L)).thenReturn(Optional.empty());
         Optional<PaymentDTO> result = paymentService.updatePayment(1L);
 
         // then
         assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUpdatingPaidPayment() {
+        // when
+        when(paymentRepository.findById(1L)).thenReturn(Optional.of(EXAMPLE_PAID_PAYMENT));
+        Exception exception = assertThrows(PaymentException.class, () -> {
+            Optional<PaymentDTO> result = paymentService.updatePayment(1L);
+        });
+
+        // then
+        assertEquals(exception.getMessage(), "Payment was already paid!");
     }
 
     @Test
@@ -86,6 +100,16 @@ public class PaymentServiceTest {
 
         // then
         assertEquals(1, result.get().getDeletedId());
+    }
+
+    @Test
+    void shouldNotFindPaymentToDelete() {
+        // when
+        when(paymentRepository.findById(1L)).thenReturn(Optional.empty());
+        Optional<DeletePaymentDTO> result = paymentService.deletePaymentById(1L);
+
+        // then
+        assertTrue(result.isEmpty());
     }
 
     @Test

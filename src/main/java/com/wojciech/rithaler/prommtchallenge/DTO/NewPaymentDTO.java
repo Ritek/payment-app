@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.util.Currency;
 
 @Getter
@@ -13,5 +14,7 @@ import java.util.Currency;
 public class NewPaymentDTO {
     @NonNull String payer_email;
     @NonNull Currency currency;
-    @NonNull Double amount;
+
+    @NonNull
+    BigDecimal amount;
 }

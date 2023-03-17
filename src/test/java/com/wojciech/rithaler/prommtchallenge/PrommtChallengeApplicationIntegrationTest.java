@@ -1,16 +1,29 @@
 package com.wojciech.rithaler.prommtchallenge;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wojciech.rithaler.prommtchallenge.DTO.NewPaymentDTO;
+import com.wojciech.rithaler.prommtchallenge.DTO.PaymentDTO;
+import com.wojciech.rithaler.prommtchallenge.Entity.Status;
 import com.wojciech.rithaler.prommtchallenge.Repository.PaymentRepository;
+import com.wojciech.rithaler.prommtchallenge.Service.PaymentService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Currency;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,17 +31,27 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@SpringBootTest
+@SpringBootTest(classes = PrommtChallengeApplicationIntegrationTest.TestConfig.class, properties = {"spring.main.allow-bean-definition-overriding=true"})
 @AutoConfigureMockMvc
-class PrommtChallengeApplicationTests {
+class PrommtChallengeApplicationIntegrationTest {
 	static final MediaType APPLICATION_JSON_UTF8 = new MediaType(
 			MediaType.APPLICATION_JSON.getType(),
 			MediaType.APPLICATION_JSON.getSubtype(),
 			StandardCharsets.UTF_8
 	);
+
+	@TestConfiguration
+	public static class TestConfig {
+		@Bean
+		@Primary
+		Clock clock() {
+			return Clock.fixed(Instant.parse("2023-01-01T10:00:00Z"), ZoneOffset.UTC);
+		}
+	}
 
 	static final String BASE_URL = "http://127.0.0.1:8080/api/payment";
 
@@ -38,11 +61,18 @@ class PrommtChallengeApplicationTests {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@Test
-	void contextLoads() {}
+	@Autowired
+	ObjectMapper objectMapper;
+
+	@Autowired
+	Clock clock;
 
 	private void createPayment() throws Exception {
-		String newPaymentJson = "{\"payer_email\": \"email@email.com\", \"currency\": \"USD\", \"amount\": 420.69}";
+		NewPaymentDTO newPayment = new NewPaymentDTO(
+				"email@email.com", Currency.getInstance("USD"), new BigDecimal("420.69")
+		);
+
+		String newPaymentJson = objectMapper.writeValueAsString(newPayment);
 		mockMvc.perform(post(BASE_URL)
 				.contentType(APPLICATION_JSON_UTF8)
 				.content(newPaymentJson))
@@ -51,7 +81,6 @@ class PrommtChallengeApplicationTests {
 	@Test
 	@Order(1)
 	void postEndpointShouldCreatePayment() throws Exception {
-		ObjectMapper objectMapper = new ObjectMapper();
 		createPayment();
 
 		assertTrue(repository.findById(1L).isPresent());
@@ -62,13 +91,18 @@ class PrommtChallengeApplicationTests {
 	void getEndpointShouldRetrievePayment() throws Exception {
 		String url = BASE_URL + "/1";
 
-		MvcResult resultResponse = mockMvc.perform(get(url)
+		PaymentDTO paymentDTO = new PaymentDTO(
+				1L, LocalDateTime.now(clock), "email@email.com",
+				Status.UNPAID, Currency.getInstance("USD"),
+				BigDecimal.valueOf(420.69), null
+		);
+
+		String paymentJson = objectMapper.writeValueAsString(paymentDTO);
+
+		mockMvc.perform(get(url)
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
-				.andReturn();
-
-		String responseJson = resultResponse.getResponse().getContentAsString();
-		assertTrue(responseJson.contains("\"id\":1"));
+				.andExpect(content().json(paymentJson));
 	}
 
 	@Test

@@ -9,13 +9,14 @@ import com.wojciech.rithaler.prommtchallenge.Exception.PaymentException;
 import com.wojciech.rithaler.prommtchallenge.PaymentBuilder;
 import com.wojciech.rithaler.prommtchallenge.PaymentDtoCreator;
 import com.wojciech.rithaler.prommtchallenge.Repository.PaymentRepository;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.RoundingMode;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.Currency;
 import java.util.Optional;
 
 @Service
@@ -24,6 +25,7 @@ public class PaymentService {
     private PaymentRepository paymentRepository;
     private PaymentBuilder paymentBuilder;
     private PaymentDtoCreator paymentDtoCreator;
+    private Clock clock;
 
     public PaymentDTO createPayment(NewPaymentDTO newPaymentDto) {
         Payment payment = paymentRepository.save(paymentBuilder.create(newPaymentDto));
@@ -37,12 +39,14 @@ public class PaymentService {
     public Optional<PaymentDTO> updatePayment(Long paymentId) {
         return paymentRepository.findById(paymentId)
                 .map(payment -> {
-                    Payment result = paymentRepository.save(update(payment));
+                    validateUnpaidPayment(payment);
+                    payment.setStatus(Status.PAID);
+                    payment.setPaid_date(LocalDateTime.now(clock));
+                    Payment result = paymentRepository.save(payment);
                     return paymentDtoCreator.createDto(result);
                 });
     }
 
-    @Transactional
     public Optional<DeletePaymentDTO> deletePaymentById(Long paymentId) {
         return paymentRepository.findById(paymentId)
                 .map(payment -> {
@@ -56,9 +60,9 @@ public class PaymentService {
         if (payment.getStatus().equals(Status.PAID)) throw new PaymentException("Payment was already paid!");
     }
 
-    public Payment update(Payment payment) {
-        payment.setStatus(Status.PAID);
-        payment.setPaid_date(ZonedDateTime.now());
+    private Payment validateNewPayment(Payment payment) {
+        if (!Currency.getAvailableCurrencies().contains(payment.getCurrency())) throw new PaymentException("Unsupported currency!");
+        payment.setAmount(payment.getAmount().setScale(2, RoundingMode.UNNECESSARY));
         return payment;
     }
 
