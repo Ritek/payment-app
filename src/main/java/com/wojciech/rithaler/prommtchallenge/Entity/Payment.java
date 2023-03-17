@@ -1,6 +1,5 @@
 package com.wojciech.rithaler.prommtchallenge.Entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,7 +23,6 @@ public class Payment {
     Long ID;
 
     @NonNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     LocalDateTime created_date;
 
     @NonNull String payer_email;
@@ -38,6 +36,5 @@ public class Payment {
     BigDecimal amount;
 
     @Setter
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     LocalDateTime paid_date;
 }

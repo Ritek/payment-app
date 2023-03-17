@@ -68,7 +68,7 @@ class PrommtChallengeApplicationIntegrationTest {
 
 	private void createPayment() throws Exception {
 		NewPaymentDTO newPayment = new NewPaymentDTO(
-				"email@email.com", "USD", new BigDecimal("420.69")
+				"email@email.com", "USD", new BigDecimal("19.99")
 		);
 
 		String newPaymentJson = objectMapper.writeValueAsString(newPayment);
@@ -87,13 +87,45 @@ class PrommtChallengeApplicationIntegrationTest {
 
 	@Test
 	@Order(2)
+	void postEndpointShouldNotCreatePaymentWithUnsupportedCurrency() throws Exception {
+		NewPaymentDTO newPayment = new NewPaymentDTO(
+				"email@email.com", "USD2", new BigDecimal("19.99")
+		);
+
+		String newPaymentJson = objectMapper.writeValueAsString(newPayment);
+
+		mockMvc.perform(post(BASE_URL)
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(newPaymentJson))
+				.andExpect(status().isBadRequest());
+
+	}
+
+	@Test
+	@Order(3)
+	void postEndpointShouldNotCreatePaymentWithWrongAmount() throws Exception {
+		NewPaymentDTO newPayment = new NewPaymentDTO(
+				"email@email.com", "USD2", new BigDecimal("0.0")
+		);
+
+		String newPaymentJson = objectMapper.writeValueAsString(newPayment);
+
+		mockMvc.perform(post(BASE_URL)
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(newPaymentJson))
+				.andExpect(status().isBadRequest());
+
+	}
+
+	@Test
+	@Order(4)
 	void getEndpointShouldRetrievePayment() throws Exception {
 		String url = BASE_URL + "/1";
 
 		PaymentDTO paymentDTO = new PaymentDTO(
 				1L, LocalDateTime.now(clock), "email@email.com",
 				Status.UNPAID, Currency.getInstance("USD"),
-				BigDecimal.valueOf(420.69), null
+				BigDecimal.valueOf(19.99), null
 		);
 
 		String paymentJson = objectMapper.writeValueAsString(paymentDTO);
@@ -105,7 +137,7 @@ class PrommtChallengeApplicationIntegrationTest {
 	}
 
 	@Test
-	@Order(3)
+	@Order(5)
 	void getEndpointShouldReturnNotFound() throws Exception {
 		String url = BASE_URL + "/2";
 		mockMvc.perform(get(url)
@@ -114,14 +146,14 @@ class PrommtChallengeApplicationIntegrationTest {
 	}
 
 	@Test
-	@Order(4)
+	@Order(6)
 	void putEndpointShouldUpdatePayment() throws Exception {
 		String url = BASE_URL + "/1";
 
 		PaymentDTO paymentDTO = new PaymentDTO(
 				1L, LocalDateTime.now(clock), "email@email.com",
 				Status.PAID, Currency.getInstance("USD"),
-				BigDecimal.valueOf(420.69), LocalDateTime.now(clock)
+				BigDecimal.valueOf(19.99), LocalDateTime.now(clock)
 		);
 
 		String paymentJson = objectMapper.writeValueAsString(paymentDTO);
@@ -133,7 +165,7 @@ class PrommtChallengeApplicationIntegrationTest {
 	}
 
 	@Test
-	@Order(5)
+	@Order(7)
 	void putEndpointShouldNotFindPayment() throws Exception {
 		String url = BASE_URL + "/2";
 
@@ -143,7 +175,7 @@ class PrommtChallengeApplicationIntegrationTest {
 	}
 
 	@Test
-	@Order(6)
+	@Order(8)
 	void deleteEndpointShouldNotFindPayment() throws Exception {
 		String url = BASE_URL + "/2";
 
@@ -153,7 +185,7 @@ class PrommtChallengeApplicationIntegrationTest {
 	}
 
 	@Test
-	@Order(7)
+	@Order(9)
 	void deleteEndpointShouldNotDeletePaidPayment() throws Exception {
 		String url = BASE_URL + "/1";
 
@@ -166,7 +198,7 @@ class PrommtChallengeApplicationIntegrationTest {
 	}
 
 	@Test
-	@Order(8)
+	@Order(10)
 	void deleteEndpointShouldDeleteUnpaidPayment() throws Exception {
 		String url = BASE_URL + "/2";
 

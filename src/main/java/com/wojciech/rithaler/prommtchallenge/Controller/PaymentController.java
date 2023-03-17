@@ -1,11 +1,12 @@
 package com.wojciech.rithaler.prommtchallenge.Controller;
 
+import com.wojciech.rithaler.prommtchallenge.CurrencyValidator;
 import com.wojciech.rithaler.prommtchallenge.DTO.DeletePaymentDTO;
 import com.wojciech.rithaler.prommtchallenge.DTO.PaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.Exception.UnsupportedCurrencyException;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class PaymentController {
 //    public void handleException(HttpMessageNotReadableException ex) {}
 
     @PostMapping
-    ResponseEntity<PaymentDTO> getPayment(@RequestBody NewPaymentDTO newPaymentDTO) {
+    ResponseEntity<PaymentDTO> createPayment(@Valid @RequestBody NewPaymentDTO newPaymentDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.createPayment(newPaymentDTO));
     }
 

@@ -31,7 +31,7 @@ public class PaymentServiceTest {
             "email@email.com",
             Status.UNPAID,
             Currency.getInstance(Locale.US),
-            new BigDecimal("420.69"),
+            new BigDecimal("19.99"),
             null
     );
 
@@ -41,7 +41,7 @@ public class PaymentServiceTest {
             "email@email.com",
             Status.PAID,
             Currency.getInstance(Locale.US),
-            new BigDecimal("420.69"),
+            new BigDecimal("19.99"),
             LocalDateTime.now()
     );
 
