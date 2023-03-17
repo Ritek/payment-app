@@ -1,12 +1,10 @@
 package com.wojciech.rithaler.prommtchallenge.Controller;
 
-import com.wojciech.rithaler.prommtchallenge.CurrencyValidator;
 import com.wojciech.rithaler.prommtchallenge.DTO.DeletePaymentDTO;
 import com.wojciech.rithaler.prommtchallenge.DTO.PaymentDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
@@ -19,10 +17,6 @@ import com.wojciech.rithaler.prommtchallenge.Service.PaymentService;
 @RequestMapping(path = "api/payment")
 public class PaymentController {
     PaymentService paymentService;
-
-//    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Couldn't parse provided values!")
-//    @ExceptionHandler(HttpMessageNotReadableException.class)
-//    public void handleException(HttpMessageNotReadableException ex) {}
 
     @PostMapping
     ResponseEntity<PaymentDTO> createPayment(@Valid @RequestBody NewPaymentDTO newPaymentDTO) {
@@ -49,7 +43,6 @@ public class PaymentController {
         return paymentService.deletePaymentById(paymentId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-
     }
 
 }

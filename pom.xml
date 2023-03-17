@@ -83,19 +83,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>com.google.cloud.tools</groupId>
-				<artifactId>jib-maven-plugin</artifactId>
-				<version>3.3.1</version>
-				<configuration>
-					<from>
-						<image>openjdk:17</image>
-					</from>
-					<to>
-						<image>Prommt-CRUD</image>
-					</to>
-				</configuration>
-			</plugin>
-			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0</version>
 			</plugin>
