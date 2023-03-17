@@ -1,9 +1,6 @@
 package com.wojciech.rithaler.prommtchallenge.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -13,8 +10,9 @@ import java.util.Currency;
 @ToString
 public class NewPaymentDTO {
     @NonNull String payer_email;
-    @NonNull Currency currency;
+    @NonNull String currency;
 
     @NonNull
+    @Setter
     BigDecimal amount;
 }

@@ -28,6 +28,7 @@ public class PaymentService {
     private Clock clock;
 
     public PaymentDTO createPayment(NewPaymentDTO newPaymentDto) {
+        // newPaymentDto.setAmount(newPaymentDto.getAmount().setScale(2, RoundingMode.DOWN));
         Payment payment = paymentRepository.save(paymentBuilder.create(newPaymentDto));
         return paymentDtoCreator.createDto(payment);
     }
@@ -59,11 +60,4 @@ public class PaymentService {
     private void validateUnpaidPayment(Payment payment) {
         if (payment.getStatus().equals(Status.PAID)) throw new PaymentException("Payment was already paid!");
     }
-
-    private Payment validateNewPayment(Payment payment) {
-        if (!Currency.getAvailableCurrencies().contains(payment.getCurrency())) throw new PaymentException("Unsupported currency!");
-        payment.setAmount(payment.getAmount().setScale(2, RoundingMode.UNNECESSARY));
-        return payment;
-    }
-
 }

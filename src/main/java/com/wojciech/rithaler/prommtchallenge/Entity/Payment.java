@@ -35,7 +35,6 @@ public class Payment {
     Currency currency;
 
     @NonNull
-    @Setter
     BigDecimal amount;
 
     @Setter

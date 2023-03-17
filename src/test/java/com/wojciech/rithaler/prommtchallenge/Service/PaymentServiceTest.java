@@ -59,6 +59,12 @@ public class PaymentServiceTest {
         paymentService = new PaymentService(paymentRepository, paymentBuilder, paymentDtoCreator, clock);
     }
 
+
+    @Test
+    void shouldReturnTrue() {
+        assertTrue(Currency.getAvailableCurrencies().contains(Currency.getInstance("USD")));
+    }
+
     @Test
     void shouldUpdatePayment() {
         // when

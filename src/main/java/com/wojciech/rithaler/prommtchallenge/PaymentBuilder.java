@@ -6,6 +6,7 @@ import com.wojciech.rithaler.prommtchallenge.Entity.Status;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.RoundingMode;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -20,8 +21,8 @@ public class PaymentBuilder {
                 .created_date(LocalDateTime.now(clock))
                 .payer_email(newPaymentDTO.getPayer_email())
                 .status(Status.UNPAID)
-                .currency(Currency.getInstance(newPaymentDTO.getCurrency().getCurrencyCode()))
-                .amount(newPaymentDTO.getAmount())
+                .currency(Currency.getInstance(newPaymentDTO.getCurrency()))
+                .amount(newPaymentDTO.getAmount().setScale(2, RoundingMode.DOWN))
                 .paid_date(null)
                 .build();
     }

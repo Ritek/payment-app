@@ -1,11 +1,11 @@
 package com.wojciech.rithaler.prommtchallenge;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wojciech.rithaler.prommtchallenge.DTO.DeletePaymentDTO;
 import com.wojciech.rithaler.prommtchallenge.DTO.NewPaymentDTO;
 import com.wojciech.rithaler.prommtchallenge.DTO.PaymentDTO;
 import com.wojciech.rithaler.prommtchallenge.Entity.Status;
 import com.wojciech.rithaler.prommtchallenge.Repository.PaymentRepository;
-import com.wojciech.rithaler.prommtchallenge.Service.PaymentService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,7 +25,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Currency;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -69,7 +68,7 @@ class PrommtChallengeApplicationIntegrationTest {
 
 	private void createPayment() throws Exception {
 		NewPaymentDTO newPayment = new NewPaymentDTO(
-				"email@email.com", Currency.getInstance("USD"), new BigDecimal("420.69")
+				"email@email.com", "USD", new BigDecimal("420.69")
 		);
 
 		String newPaymentJson = objectMapper.writeValueAsString(newPayment);
@@ -119,13 +118,18 @@ class PrommtChallengeApplicationIntegrationTest {
 	void putEndpointShouldUpdatePayment() throws Exception {
 		String url = BASE_URL + "/1";
 
-		MvcResult resultResponse = mockMvc.perform(put(url)
+		PaymentDTO paymentDTO = new PaymentDTO(
+				1L, LocalDateTime.now(clock), "email@email.com",
+				Status.PAID, Currency.getInstance("USD"),
+				BigDecimal.valueOf(420.69), LocalDateTime.now(clock)
+		);
+
+		String paymentJson = objectMapper.writeValueAsString(paymentDTO);
+
+		mockMvc.perform(put(url)
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
-				.andReturn();
-
-		String responseJson = resultResponse.getResponse().getContentAsString();
-		assertTrue(responseJson.contains("\"id\":1") && responseJson.contains("\"status\":\"PAID\""));
+				.andExpect(content().json(paymentJson));
 	}
 
 	@Test
@@ -159,7 +163,6 @@ class PrommtChallengeApplicationIntegrationTest {
 				.andReturn();
 
 		String responseJson = resultResponse.getResponse().getContentAsString();
-		System.out.println(">>>" + responseJson);
 	}
 
 	@Test
@@ -169,13 +172,13 @@ class PrommtChallengeApplicationIntegrationTest {
 
 		createPayment();
 
-		MvcResult resultResponse = mockMvc.perform(delete(url)
+		DeletePaymentDTO deletePaymentDTO= new DeletePaymentDTO(2L);
+		String deletePaymentJson = objectMapper.writeValueAsString(deletePaymentDTO);
+
+		mockMvc.perform(delete(url)
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
-				.andReturn();
-
-		String responseJson = resultResponse.getResponse().getContentAsString();
-		assertEquals("{\"deletedId\":2}", responseJson);
+				.andExpect(content().json(deletePaymentJson));
 	}
 
 }
