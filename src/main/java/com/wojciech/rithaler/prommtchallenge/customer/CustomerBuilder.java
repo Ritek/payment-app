@@ -1,9 +1,9 @@
 package com.wojciech.rithaler.prommtchallenge.customer;
 
-import com.wojciech.rithaler.prommtchallenge.customer.dto.NewCustomerDTO;
+import com.wojciech.rithaler.prommtchallenge.customer.dto.NewCustomerDto;
 
 class CustomerBuilder {
-    public Customer create(NewCustomerDTO newCustomerDTO) {
+    public Customer create(NewCustomerDto newCustomerDTO) {
         return Customer.builder()
             .role(Role.USER)
             .name(newCustomerDTO.getName())

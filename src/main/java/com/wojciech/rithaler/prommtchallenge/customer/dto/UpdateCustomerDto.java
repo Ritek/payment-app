@@ -1,20 +1,16 @@
 package com.wojciech.rithaler.prommtchallenge.customer.dto;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NonNull;
 
+@Data
 @AllArgsConstructor
-public class CustomerDTO {
+public class UpdateCustomerDto {
     @NonNull
     Long ID;
-    @NonNull
-    @NotEmpty
     String name;
-    @NonNull
-    @NotEmpty
     String surname;
-    @NonNull
-    @NotEmpty
     String email;
+    String password;
 }

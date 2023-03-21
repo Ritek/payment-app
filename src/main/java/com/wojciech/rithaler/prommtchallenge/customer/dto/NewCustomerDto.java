@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @AllArgsConstructor
-public class NewCustomerDTO {
+public class NewCustomerDto {
     @NotEmpty
     String name;
     @NotEmpty
