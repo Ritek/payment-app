@@ -1,4 +1,4 @@
-package com.wojciech.rithaler.prommtchallenge;
+package com.wojciech.rithaler.prommtchallenge.payment;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

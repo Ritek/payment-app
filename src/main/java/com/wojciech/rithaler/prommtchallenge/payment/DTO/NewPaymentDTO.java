@@ -1,6 +1,6 @@
-package com.wojciech.rithaler.prommtchallenge.DTO;
+package com.wojciech.rithaler.prommtchallenge.payment.DTO;
 
-import com.wojciech.rithaler.prommtchallenge.CurrencyConstraint;
+import com.wojciech.rithaler.prommtchallenge.payment.CurrencyConstraint;
 import jakarta.validation.constraints.DecimalMin;
 import lombok.*;
 

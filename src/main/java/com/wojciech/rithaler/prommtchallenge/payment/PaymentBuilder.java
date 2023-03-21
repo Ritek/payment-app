@@ -1,15 +1,14 @@
-package com.wojciech.rithaler.prommtchallenge;
+package com.wojciech.rithaler.prommtchallenge.payment;
 
-import com.wojciech.rithaler.prommtchallenge.DTO.NewPaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.Entity.Payment;
-import com.wojciech.rithaler.prommtchallenge.Entity.Status;
+import com.wojciech.rithaler.prommtchallenge.payment.DTO.NewPaymentDTO;
+import com.wojciech.rithaler.prommtchallenge.payment.Entity.Payment;
+import com.wojciech.rithaler.prommtchallenge.payment.Entity.Status;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.RoundingMode;
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.Currency;
 
 @Component

@@ -1,6 +1,6 @@
-package com.wojciech.rithaler.prommtchallenge.DTO;
+package com.wojciech.rithaler.prommtchallenge.payment.DTO;
 
-import com.wojciech.rithaler.prommtchallenge.Entity.Status;
+import com.wojciech.rithaler.prommtchallenge.payment.Entity.Status;
 import lombok.*;
 
 import java.math.BigDecimal;

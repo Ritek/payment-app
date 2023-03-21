@@ -1,4 +1,4 @@
-package com.wojciech.rithaler.prommtchallenge.DTO;
+package com.wojciech.rithaler.prommtchallenge.payment.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,7 +1,7 @@
-package com.wojciech.rithaler.prommtchallenge;
+package com.wojciech.rithaler.prommtchallenge.payment;
 
-import com.wojciech.rithaler.prommtchallenge.DTO.PaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.Entity.Payment;
+import com.wojciech.rithaler.prommtchallenge.payment.DTO.PaymentDTO;
+import com.wojciech.rithaler.prommtchallenge.payment.Entity.Payment;
 import org.springframework.stereotype.Component;
 
 @Component

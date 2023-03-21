@@ -1,7 +1,7 @@
-package com.wojciech.rithaler.prommtchallenge.Controller;
+package com.wojciech.rithaler.prommtchallenge.payment.Controller;
 
-import com.wojciech.rithaler.prommtchallenge.DTO.DeletePaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.DTO.PaymentDTO;
+import com.wojciech.rithaler.prommtchallenge.payment.DTO.DeletePaymentDTO;
+import com.wojciech.rithaler.prommtchallenge.payment.DTO.PaymentDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
 
-import com.wojciech.rithaler.prommtchallenge.DTO.NewPaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.Service.PaymentService;
+import com.wojciech.rithaler.prommtchallenge.payment.DTO.NewPaymentDTO;
+import com.wojciech.rithaler.prommtchallenge.payment.Service.PaymentService;
 
 @AllArgsConstructor
 @RestController

@@ -1,11 +1,11 @@
 package com.wojciech.rithaler.prommtchallenge;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wojciech.rithaler.prommtchallenge.DTO.DeletePaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.DTO.NewPaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.DTO.PaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.Entity.Status;
-import com.wojciech.rithaler.prommtchallenge.Repository.PaymentRepository;
+import com.wojciech.rithaler.prommtchallenge.payment.DTO.DeletePaymentDTO;
+import com.wojciech.rithaler.prommtchallenge.payment.DTO.NewPaymentDTO;
+import com.wojciech.rithaler.prommtchallenge.payment.DTO.PaymentDTO;
+import com.wojciech.rithaler.prommtchallenge.payment.Entity.Status;
+import com.wojciech.rithaler.prommtchallenge.payment.Repository.PaymentRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

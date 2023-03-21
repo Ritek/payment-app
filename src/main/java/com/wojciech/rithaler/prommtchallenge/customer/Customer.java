@@ -1,14 +1,12 @@
-package com.wojciech.rithaler.prommtchallenge.Entity;
+package com.wojciech.rithaler.prommtchallenge.customer;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Currency;
+import lombok.experimental.FieldDefaults;
 
 @Entity
 @AllArgsConstructor
@@ -17,24 +15,23 @@ import java.util.Currency;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class Payment {
+@FieldDefaults(level = AccessLevel.PROTECTED)
+class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long ID;
-
     @NonNull
-    LocalDateTime created_date;
-
-    @NonNull String payer_email;
-
-    @Setter Status status;
-
+    Role role;
     @NonNull
-    Currency currency;
-
+    @NotEmpty
+    String name;
     @NonNull
-    BigDecimal amount;
-
-    @Setter
-    LocalDateTime paid_date;
+    @NotEmpty
+    String surname;
+    @NonNull
+    @NotEmpty
+    String email;
+    @NonNull
+    @NotEmpty
+    String password;
 }

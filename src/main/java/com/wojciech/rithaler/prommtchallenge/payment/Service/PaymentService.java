@@ -1,14 +1,14 @@
-package com.wojciech.rithaler.prommtchallenge.Service;
+package com.wojciech.rithaler.prommtchallenge.payment.Service;
 
-import com.wojciech.rithaler.prommtchallenge.DTO.DeletePaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.DTO.NewPaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.DTO.PaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.Entity.Payment;
-import com.wojciech.rithaler.prommtchallenge.Entity.Status;
-import com.wojciech.rithaler.prommtchallenge.Exception.PaymentException;
-import com.wojciech.rithaler.prommtchallenge.PaymentBuilder;
-import com.wojciech.rithaler.prommtchallenge.PaymentDtoCreator;
-import com.wojciech.rithaler.prommtchallenge.Repository.PaymentRepository;
+import com.wojciech.rithaler.prommtchallenge.payment.DTO.DeletePaymentDTO;
+import com.wojciech.rithaler.prommtchallenge.payment.DTO.NewPaymentDTO;
+import com.wojciech.rithaler.prommtchallenge.payment.DTO.PaymentDTO;
+import com.wojciech.rithaler.prommtchallenge.payment.Entity.Payment;
+import com.wojciech.rithaler.prommtchallenge.payment.Entity.Status;
+import com.wojciech.rithaler.prommtchallenge.payment.Exception.PaymentException;
+import com.wojciech.rithaler.prommtchallenge.payment.PaymentBuilder;
+import com.wojciech.rithaler.prommtchallenge.payment.PaymentDtoCreator;
+import com.wojciech.rithaler.prommtchallenge.payment.Repository.PaymentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
