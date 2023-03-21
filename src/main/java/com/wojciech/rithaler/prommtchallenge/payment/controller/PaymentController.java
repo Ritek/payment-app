@@ -1,7 +1,7 @@
-package com.wojciech.rithaler.prommtchallenge.payment.Controller;
+package com.wojciech.rithaler.prommtchallenge.payment.controller;
 
-import com.wojciech.rithaler.prommtchallenge.payment.DTO.DeletePaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.payment.DTO.PaymentDTO;
+import com.wojciech.rithaler.prommtchallenge.payment.dto.DeletePaymentDto;
+import com.wojciech.rithaler.prommtchallenge.payment.dto.PaymentDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
 
-import com.wojciech.rithaler.prommtchallenge.payment.DTO.NewPaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.payment.Service.PaymentService;
+import com.wojciech.rithaler.prommtchallenge.payment.dto.NewPaymentDto;
+import com.wojciech.rithaler.prommtchallenge.payment.service.PaymentService;
 
 @AllArgsConstructor
 @RestController
@@ -19,12 +19,12 @@ public class PaymentController {
     PaymentService paymentService;
 
     @PostMapping
-    ResponseEntity<PaymentDTO> createPayment(@Valid @RequestBody NewPaymentDTO newPaymentDTO) {
+    ResponseEntity<PaymentDto> createPayment(@Valid @RequestBody NewPaymentDto newPaymentDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.createPayment(newPaymentDTO));
     }
 
     @GetMapping("/{paymentId}")
-    ResponseEntity<PaymentDTO> getPayment(@PathVariable Long paymentId) {
+    ResponseEntity<PaymentDto> getPayment(@PathVariable Long paymentId) {
         return paymentService.getPaymentById(paymentId).map(
             paymentDto -> ResponseEntity.status(HttpStatus.OK).body(paymentDto))
             .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build()
@@ -32,14 +32,14 @@ public class PaymentController {
     }
 
     @PutMapping("/{paymentId}")
-    ResponseEntity<PaymentDTO> updatePayment(@PathVariable Long paymentId) {
+    ResponseEntity<PaymentDto> updatePayment(@PathVariable Long paymentId) {
         return paymentService.updatePayment(paymentId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{paymentId}")
-    ResponseEntity<DeletePaymentDTO> deletePayment(@PathVariable Long paymentId) {
+    ResponseEntity<DeletePaymentDto> deletePayment(@PathVariable Long paymentId) {
         return paymentService.deletePaymentById(paymentId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

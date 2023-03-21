@@ -1,8 +1,8 @@
 package com.wojciech.rithaler.prommtchallenge.payment;
 
-import com.wojciech.rithaler.prommtchallenge.payment.DTO.NewPaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.payment.Entity.Payment;
-import com.wojciech.rithaler.prommtchallenge.payment.Entity.Status;
+import com.wojciech.rithaler.prommtchallenge.payment.dto.NewPaymentDto;
+import com.wojciech.rithaler.prommtchallenge.payment.entity.Payment;
+import com.wojciech.rithaler.prommtchallenge.payment.entity.Status;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,14 +15,14 @@ import java.util.Currency;
 @AllArgsConstructor
 public class PaymentBuilder {
     private Clock clock;
-    public Payment create(NewPaymentDTO newPaymentDTO) {
+    public Payment create(NewPaymentDto newPaymentDTO) {
         return Payment.builder()
-                .created_date(LocalDateTime.now(clock))
-                .payer_email(newPaymentDTO.getPayer_email())
+                .createdDate(LocalDateTime.now(clock))
+                .payerEmail(newPaymentDTO.getPayer_email())
                 .status(Status.UNPAID)
                 .currency(Currency.getInstance(newPaymentDTO.getCurrency()))
                 .amount(newPaymentDTO.getAmount().setScale(2, RoundingMode.DOWN))
-                .paid_date(null)
+                .paidDate(null)
                 .build();
     }
 }

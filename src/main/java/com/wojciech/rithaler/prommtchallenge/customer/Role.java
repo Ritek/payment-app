@@ -1,6 +1,6 @@
 package com.wojciech.rithaler.prommtchallenge.customer;
 
-public enum Role {
+enum Role {
     UNREGISTERED,
     USER,
     ADMIN

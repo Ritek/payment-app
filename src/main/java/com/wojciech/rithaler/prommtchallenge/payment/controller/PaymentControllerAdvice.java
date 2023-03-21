@@ -1,4 +1,4 @@
-package com.wojciech.rithaler.prommtchallenge.payment.Controller;
+package com.wojciech.rithaler.prommtchallenge.payment.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;

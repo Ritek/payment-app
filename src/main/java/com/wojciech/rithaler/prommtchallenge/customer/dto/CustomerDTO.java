@@ -1,4 +1,4 @@
-package com.wojciech.rithaler.prommtchallenge.customer.DTO;
+package com.wojciech.rithaler.prommtchallenge.customer.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;

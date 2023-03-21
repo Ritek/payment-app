@@ -1,4 +1,4 @@
-package com.wojciech.rithaler.prommtchallenge.payment.DTO;
+package com.wojciech.rithaler.prommtchallenge.payment.dto;
 
 import com.wojciech.rithaler.prommtchallenge.payment.CurrencyConstraint;
 import jakarta.validation.constraints.DecimalMin;
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Getter
 @AllArgsConstructor
 @ToString
-public class NewPaymentDTO {
+public class NewPaymentDto {
     @NonNull String payer_email;
 
     @NonNull

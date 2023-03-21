@@ -1,6 +1,6 @@
 package com.wojciech.rithaler.prommtchallenge.customer;
 
-import com.wojciech.rithaler.prommtchallenge.customer.DTO.CustomerDTO;
+import com.wojciech.rithaler.prommtchallenge.customer.dto.CustomerDTO;
 import org.springframework.stereotype.Component;
 
 @Component

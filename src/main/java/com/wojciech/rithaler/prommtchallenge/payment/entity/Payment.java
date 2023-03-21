@@ -1,9 +1,10 @@
-package com.wojciech.rithaler.prommtchallenge.payment.Entity;
+package com.wojciech.rithaler.prommtchallenge.payment.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -14,27 +15,26 @@ import java.util.Currency;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Getter
-@ToString
-@EqualsAndHashCode
+@Data
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long ID;
+    private Long ID;
 
     @NonNull
-    LocalDateTime created_date;
-
-    @NonNull String payer_email;
-
-    @Setter Status status;
+    private LocalDateTime createdDate;
 
     @NonNull
-    Currency currency;
+    private String payerEmail;
+
+    @NotNull
+    private Status status;
 
     @NonNull
-    BigDecimal amount;
+    private Currency currency;
 
-    @Setter
-    LocalDateTime paid_date;
+    @NonNull
+    private BigDecimal amount;
+
+    private LocalDateTime paidDate;
 }

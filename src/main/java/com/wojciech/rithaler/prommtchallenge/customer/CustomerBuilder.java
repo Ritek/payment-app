@@ -1,6 +1,6 @@
 package com.wojciech.rithaler.prommtchallenge.customer;
 
-import com.wojciech.rithaler.prommtchallenge.customer.DTO.NewCustomerDTO;
+import com.wojciech.rithaler.prommtchallenge.customer.dto.NewCustomerDTO;
 
 class CustomerBuilder {
     public Customer create(NewCustomerDTO newCustomerDTO) {

@@ -1,4 +1,4 @@
-package com.wojciech.rithaler.prommtchallenge.payment.Exception;
+package com.wojciech.rithaler.prommtchallenge.payment.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

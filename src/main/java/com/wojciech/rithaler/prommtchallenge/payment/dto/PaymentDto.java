@@ -1,6 +1,6 @@
-package com.wojciech.rithaler.prommtchallenge.payment.DTO;
+package com.wojciech.rithaler.prommtchallenge.payment.dto;
 
-import com.wojciech.rithaler.prommtchallenge.payment.Entity.Status;
+import com.wojciech.rithaler.prommtchallenge.payment.entity.Status;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -11,7 +11,7 @@ import java.util.Currency;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class PaymentDTO {
+public class PaymentDto {
     @NonNull Long ID;
     @NonNull LocalDateTime created_date;
     @NonNull String payer_email;

@@ -1,14 +1,13 @@
-package com.wojciech.rithaler.prommtchallenge.Service;
+package com.wojciech.rithaler.prommtchallenge.payment.service;
 
-import com.wojciech.rithaler.prommtchallenge.payment.DTO.DeletePaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.payment.DTO.PaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.payment.Entity.Payment;
-import com.wojciech.rithaler.prommtchallenge.payment.Entity.Status;
-import com.wojciech.rithaler.prommtchallenge.payment.Exception.PaymentException;
+import com.wojciech.rithaler.prommtchallenge.payment.dto.DeletePaymentDto;
+import com.wojciech.rithaler.prommtchallenge.payment.dto.PaymentDto;
+import com.wojciech.rithaler.prommtchallenge.payment.entity.Payment;
+import com.wojciech.rithaler.prommtchallenge.payment.entity.Status;
+import com.wojciech.rithaler.prommtchallenge.payment.exception.PaymentException;
 import com.wojciech.rithaler.prommtchallenge.payment.PaymentBuilder;
 import com.wojciech.rithaler.prommtchallenge.payment.PaymentDtoCreator;
-import com.wojciech.rithaler.prommtchallenge.payment.Repository.PaymentRepository;
-import com.wojciech.rithaler.prommtchallenge.payment.Service.PaymentService;
+import com.wojciech.rithaler.prommtchallenge.payment.repository.PaymentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -65,7 +64,7 @@ public class PaymentServiceTest {
         // when
         when(paymentRepository.findById(1L)).thenReturn(Optional.of(EXAMPLE_UNPAID_PAYMENT));
         when(paymentRepository.save(EXAMPLE_UNPAID_PAYMENT)).thenReturn(EXAMPLE_UNPAID_PAYMENT);
-        Optional<PaymentDTO> result = paymentService.updatePayment(1L);
+        Optional<PaymentDto> result = paymentService.updatePayment(1L);
 
         // then
         assertTrue(result.isPresent());
@@ -75,7 +74,7 @@ public class PaymentServiceTest {
     void shouldNotFindPaymentToUpdate() {
         // when
         when(paymentRepository.findById(1L)).thenReturn(Optional.empty());
-        Optional<PaymentDTO> result = paymentService.updatePayment(1L);
+        Optional<PaymentDto> result = paymentService.updatePayment(1L);
 
         // then
         assertTrue(result.isEmpty());
@@ -86,7 +85,7 @@ public class PaymentServiceTest {
         // when
         when(paymentRepository.findById(1L)).thenReturn(Optional.of(EXAMPLE_PAID_PAYMENT));
         Exception exception = assertThrows(PaymentException.class, () -> {
-            Optional<PaymentDTO> result = paymentService.updatePayment(1L);
+            Optional<PaymentDto> result = paymentService.updatePayment(1L);
         });
 
         // then
@@ -97,7 +96,7 @@ public class PaymentServiceTest {
     void shouldSuccessfullyDeletePayment() {
         // when
         when(paymentRepository.findById(1L)).thenReturn(Optional.of(EXAMPLE_UNPAID_PAYMENT));
-        Optional<DeletePaymentDTO> result = paymentService.deletePaymentById(1L);
+        Optional<DeletePaymentDto> result = paymentService.deletePaymentById(1L);
 
         // then
         assertEquals(1, result.get().getDeletedId());
@@ -107,7 +106,7 @@ public class PaymentServiceTest {
     void shouldNotFindPaymentToDelete() {
         // when
         when(paymentRepository.findById(1L)).thenReturn(Optional.empty());
-        Optional<DeletePaymentDTO> result = paymentService.deletePaymentById(1L);
+        Optional<DeletePaymentDto> result = paymentService.deletePaymentById(1L);
 
         // then
         assertTrue(result.isEmpty());
@@ -118,7 +117,7 @@ public class PaymentServiceTest {
         // when
         when(paymentRepository.findById(1L)).thenReturn(Optional.of(EXAMPLE_PAID_PAYMENT));
         Exception exception = assertThrows(PaymentException.class, () -> {
-            Optional<DeletePaymentDTO> result = paymentService.deletePaymentById(1L);
+            Optional<DeletePaymentDto> result = paymentService.deletePaymentById(1L);
         });
 
         // then

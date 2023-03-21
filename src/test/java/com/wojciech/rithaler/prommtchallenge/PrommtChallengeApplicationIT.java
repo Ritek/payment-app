@@ -1,11 +1,11 @@
 package com.wojciech.rithaler.prommtchallenge;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wojciech.rithaler.prommtchallenge.payment.DTO.DeletePaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.payment.DTO.NewPaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.payment.DTO.PaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.payment.Entity.Status;
-import com.wojciech.rithaler.prommtchallenge.payment.Repository.PaymentRepository;
+import com.wojciech.rithaler.prommtchallenge.payment.dto.DeletePaymentDto;
+import com.wojciech.rithaler.prommtchallenge.payment.dto.NewPaymentDto;
+import com.wojciech.rithaler.prommtchallenge.payment.dto.PaymentDto;
+import com.wojciech.rithaler.prommtchallenge.payment.entity.Status;
+import com.wojciech.rithaler.prommtchallenge.payment.repository.PaymentRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -34,9 +34,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@SpringBootTest(classes = PrommtChallengeApplicationIntegrationTest.TestConfig.class, properties = {"spring.main.allow-bean-definition-overriding=true"})
+@SpringBootTest(classes = PrommtChallengeApplicationIT.TestConfig.class, properties = {"spring.main.allow-bean-definition-overriding=true"})
 @AutoConfigureMockMvc
-class PrommtChallengeApplicationIntegrationTest {
+class PrommtChallengeApplicationIT {
 	static final MediaType APPLICATION_JSON_UTF8 = new MediaType(
 			MediaType.APPLICATION_JSON.getType(),
 			MediaType.APPLICATION_JSON.getSubtype(),
@@ -67,7 +67,7 @@ class PrommtChallengeApplicationIntegrationTest {
 	Clock clock;
 
 	private void createPayment() throws Exception {
-		NewPaymentDTO newPayment = new NewPaymentDTO(
+		NewPaymentDto newPayment = new NewPaymentDto(
 				"email@email.com", "USD", new BigDecimal("19.99")
 		);
 
@@ -88,7 +88,7 @@ class PrommtChallengeApplicationIntegrationTest {
 	@Test
 	@Order(2)
 	void postEndpointShouldNotCreatePaymentWithUnsupportedCurrency() throws Exception {
-		NewPaymentDTO newPayment = new NewPaymentDTO(
+		NewPaymentDto newPayment = new NewPaymentDto(
 				"email@email.com", "USD2", new BigDecimal("19.99")
 		);
 
@@ -104,7 +104,7 @@ class PrommtChallengeApplicationIntegrationTest {
 	@Test
 	@Order(3)
 	void postEndpointShouldNotCreatePaymentWithWrongAmount() throws Exception {
-		NewPaymentDTO newPayment = new NewPaymentDTO(
+		NewPaymentDto newPayment = new NewPaymentDto(
 				"email@email.com", "USD2", new BigDecimal("0.0")
 		);
 
@@ -122,7 +122,7 @@ class PrommtChallengeApplicationIntegrationTest {
 	void getEndpointShouldRetrievePayment() throws Exception {
 		String url = BASE_URL + "/1";
 
-		PaymentDTO paymentDTO = new PaymentDTO(
+		PaymentDto paymentDTO = new PaymentDto(
 				1L, LocalDateTime.now(clock), "email@email.com",
 				Status.UNPAID, Currency.getInstance("USD"),
 				BigDecimal.valueOf(19.99), null
@@ -150,7 +150,7 @@ class PrommtChallengeApplicationIntegrationTest {
 	void putEndpointShouldUpdatePayment() throws Exception {
 		String url = BASE_URL + "/1";
 
-		PaymentDTO paymentDTO = new PaymentDTO(
+		PaymentDto paymentDTO = new PaymentDto(
 				1L, LocalDateTime.now(clock), "email@email.com",
 				Status.PAID, Currency.getInstance("USD"),
 				BigDecimal.valueOf(19.99), LocalDateTime.now(clock)
@@ -204,7 +204,7 @@ class PrommtChallengeApplicationIntegrationTest {
 
 		createPayment();
 
-		DeletePaymentDTO deletePaymentDTO= new DeletePaymentDTO(2L);
+		DeletePaymentDto deletePaymentDTO= new DeletePaymentDto(2L);
 		String deletePaymentJson = objectMapper.writeValueAsString(deletePaymentDTO);
 
 		mockMvc.perform(delete(url)

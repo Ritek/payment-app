@@ -1,20 +1,20 @@
 package com.wojciech.rithaler.prommtchallenge.payment;
 
-import com.wojciech.rithaler.prommtchallenge.payment.DTO.PaymentDTO;
-import com.wojciech.rithaler.prommtchallenge.payment.Entity.Payment;
+import com.wojciech.rithaler.prommtchallenge.payment.dto.PaymentDto;
+import com.wojciech.rithaler.prommtchallenge.payment.entity.Payment;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PaymentDtoCreator {
-    public PaymentDTO createDto(Payment payment) {
-        return new PaymentDTO(
+    public PaymentDto createDto(Payment payment) {
+        return new PaymentDto(
                 payment.getID(),
-                payment.getCreated_date(),
-                payment.getPayer_email(),
+                payment.getCreatedDate(),
+                payment.getPayerEmail(),
                 payment.getStatus(),
                 payment.getCurrency(),
                 payment.getAmount(),
-                payment.getPaid_date()
+                payment.getPaidDate()
         );
     }
 }
