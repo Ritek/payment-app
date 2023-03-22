@@ -56,13 +56,9 @@ class CustomerServiceImpl implements CustomerService {
     }
 
     private Customer updateCustomer(Customer customer, UpdateCustomerDto updateCustomerDto) {
-        return new Customer(
-                customer.getID(),
-                customer.getRole(),
-                Optional.of(updateCustomerDto.getName()).orElse(customer.getName()),
-                Optional.of(updateCustomerDto.getSurname()).orElse(customer.getSurname()),
-                Optional.of(updateCustomerDto.getEmail()).orElse(customer.getEmail()),
-                Optional.of(updateCustomerDto.getPassword()).orElse(customer.getPassword())
-        );
+        Optional.ofNullable(updateCustomerDto.getName()).ifPresent(customer::setName);
+        Optional.ofNullable(updateCustomerDto.getSurname()).ifPresent(customer::setSurname);
+
+        return customer;
     }
 }

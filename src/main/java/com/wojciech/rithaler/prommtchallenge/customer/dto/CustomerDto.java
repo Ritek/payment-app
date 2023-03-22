@@ -1,9 +1,11 @@
 package com.wojciech.rithaler.prommtchallenge.customer.dto;
 
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
+@Getter
+@ToString
+@EqualsAndHashCode
 @AllArgsConstructor
 public class CustomerDto {
     @NonNull

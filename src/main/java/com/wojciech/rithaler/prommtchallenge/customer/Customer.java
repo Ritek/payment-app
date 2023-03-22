@@ -12,9 +12,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Getter
-@ToString
-@EqualsAndHashCode
+@Data
 @FieldDefaults(level = AccessLevel.PROTECTED)
 class Customer {
     @Id
