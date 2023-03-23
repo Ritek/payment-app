@@ -1,35 +1,37 @@
 package com.wojciech.rithaler.prommtchallenge.customer;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.wojciech.rithaler.prommtchallenge.payment.entity.Payment;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-@FieldDefaults(level = AccessLevel.PROTECTED)
+@ToString
 class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long ID;
+    private Long ID;
     @NonNull
-    Role role;
-    @NonNull
-    @NotEmpty
-    String name;
+    private Role role;
     @NonNull
     @NotEmpty
-    String surname;
+    private String name;
     @NonNull
     @NotEmpty
-    String email;
+    private String surname;
     @NonNull
     @NotEmpty
-    String password;
+    private String email;
+    @NonNull
+    @NotEmpty
+    private String password;
+    @OneToMany(mappedBy = "payerEmail")
+    private List<Payment> payments = new ArrayList<>();
 }

@@ -3,10 +3,10 @@ package com.wojciech.rithaler.prommtchallenge.customer.dto;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
+@AllArgsConstructor
 @Getter
 @ToString
 @EqualsAndHashCode
-@AllArgsConstructor
 public class CustomerDto {
     @NonNull
     Long ID;

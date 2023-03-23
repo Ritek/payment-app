@@ -26,6 +26,7 @@ class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Optional<CustomerDto> findCustomerById(Long customerId) {
+        System.out.println(customerRepository.findById(customerId));
         return customerRepository.findById(customerId)
                 .map(customerDtoCreator::createDto);
     }
