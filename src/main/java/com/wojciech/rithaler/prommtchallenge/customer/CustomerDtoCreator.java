@@ -1,7 +1,10 @@
 package com.wojciech.rithaler.prommtchallenge.customer;
 
 import com.wojciech.rithaler.prommtchallenge.customer.dto.CustomerDto;
+import com.wojciech.rithaler.prommtchallenge.payment.dto.PaymentDto;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 
 @Component
 class CustomerDtoCreator {

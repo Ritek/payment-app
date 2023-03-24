@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -32,6 +34,11 @@ public class PaymentService {
 
     public Optional<PaymentDto> getPaymentById(Long paymentId) {
         return paymentRepository.findById(paymentId).map(paymentDtoCreator::createDto);
+    }
+
+    public List<PaymentDto> getCustomerPayments(Long customerId) {
+        return paymentRepository.findAllByCustomerId(customerId).stream()
+                .map(paymentDtoCreator::createDto).collect(Collectors.toList());
     }
 
     public Optional<PaymentDto> updatePayment(Long paymentId) {

@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import com.wojciech.rithaler.prommtchallenge.payment.dto.NewPaymentDto;
 import com.wojciech.rithaler.prommtchallenge.payment.service.PaymentService;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping(path = "api/payment")
@@ -30,6 +32,11 @@ public class PaymentController {
             paymentDto -> ResponseEntity.status(HttpStatus.OK).body(paymentDto))
             .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build()
         );
+    }
+
+    @GetMapping
+    ResponseEntity<List<PaymentDto>> getPaymentByCustomerId(@RequestParam Long customerId) {
+        return ResponseEntity.status(HttpStatus.OK).body(paymentService.getCustomerPayments(customerId));
     }
 
     @PutMapping("/{paymentId}")

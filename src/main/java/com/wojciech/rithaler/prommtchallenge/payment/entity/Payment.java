@@ -20,6 +20,9 @@ public class Payment {
     private Long ID;
 
     @NonNull
+    private Long customerId;
+
+    @NonNull
     private LocalDateTime createdDate;
 
     @NonNull

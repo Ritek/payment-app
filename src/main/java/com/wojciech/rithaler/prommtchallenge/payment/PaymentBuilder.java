@@ -18,7 +18,8 @@ public class PaymentBuilder {
     public Payment create(NewPaymentDto newPaymentDTO) {
         return Payment.builder()
                 .createdDate(LocalDateTime.now(clock))
-                .payerEmail(newPaymentDTO.getPayer_email())
+                .customerId(newPaymentDTO.getCustomerId())
+                .payerEmail(newPaymentDTO.getPayerEmail())
                 .status(Status.UNPAID)
                 .currency(Currency.getInstance(newPaymentDTO.getCurrency()))
                 .amount(newPaymentDTO.getAmount().setScale(2, RoundingMode.DOWN))

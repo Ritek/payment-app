@@ -27,6 +27,7 @@ import static org.mockito.Mockito.when;
 public class PaymentServiceTest {
     Payment EXAMPLE_UNPAID_PAYMENT = new Payment(
             1L,
+            1L,
             LocalDateTime.now(),
             "email@email.com",
             Status.UNPAID,
@@ -36,6 +37,7 @@ public class PaymentServiceTest {
     );
 
     Payment EXAMPLE_PAID_PAYMENT = new Payment(
+            1L,
             1L,
             LocalDateTime.now(),
             "email@email.com",

@@ -32,6 +32,7 @@ class Customer {
     @NonNull
     @NotEmpty
     private String password;
-    @OneToMany(mappedBy = "payerEmail")
+
+    @OneToMany(mappedBy = "customerId")
     private List<Payment> payments = new ArrayList<>();
 }

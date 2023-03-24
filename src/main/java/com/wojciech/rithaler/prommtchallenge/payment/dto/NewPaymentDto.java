@@ -10,7 +10,9 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @ToString
 public class NewPaymentDto {
-    @NonNull String payer_email;
+    @NonNull String payerEmail;
+
+    @NonNull Long customerId;
 
     @NonNull
     @CurrencyConstraint
