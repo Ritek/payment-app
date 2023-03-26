@@ -2,4 +2,8 @@ package com.wojciech.rithaler.prommtchallenge.customer;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-interface CustomerRepository extends JpaRepository<Customer, Long> { }
+import java.util.Optional;
+
+interface CustomerRepository extends JpaRepository<Customer, Long> {
+    Optional<Customer> findByEmail(String email);
+}

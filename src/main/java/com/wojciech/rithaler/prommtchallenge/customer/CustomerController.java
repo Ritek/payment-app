@@ -32,7 +32,7 @@ class CustomerController {
     }
 
     @GetMapping("/all")
-    ResponseEntity<List<CustomerDto>> getAllCustomers(@PathVariable Long customerId) {
+    ResponseEntity<List<CustomerDto>> getAllCustomers() {
         return ResponseEntity.status(HttpStatus.OK).body(customerService.getAllCustomers());
     }
 

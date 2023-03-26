@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @Data
 @ToString
-class Customer {
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ID;
@@ -32,7 +32,4 @@ class Customer {
     @NonNull
     @NotEmpty
     private String password;
-
-    @OneToMany(mappedBy = "customerId")
-    private List<Payment> payments = new ArrayList<>();
 }

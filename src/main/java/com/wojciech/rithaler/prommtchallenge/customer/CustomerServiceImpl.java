@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-class CustomerServiceImpl implements CustomerService {
+public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository customerRepository;
     private CustomerBuilder customerBuilder;
     private CustomerDtoCreator customerDtoCreator;

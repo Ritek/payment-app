@@ -14,7 +14,6 @@ class CustomerBuilder {
             .surname(newCustomerDTO.getSurname())
             .email(newCustomerDTO.getEmail())
             .password(newCustomerDTO.getPassword())
-            .payments(new ArrayList<>())
             .build();
     }
 }
