@@ -5,6 +5,7 @@ import com.wojciech.rithaler.prommtchallenge.customer.dto.DeleteCustomerDto;
 import com.wojciech.rithaler.prommtchallenge.customer.dto.NewCustomerDto;
 import com.wojciech.rithaler.prommtchallenge.customer.dto.UpdateCustomerDto;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

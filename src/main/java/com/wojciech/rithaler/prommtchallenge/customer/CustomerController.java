@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @AllArgsConstructor
@@ -29,6 +30,11 @@ class CustomerController {
                 customerDto -> ResponseEntity.status(HttpStatus.OK).body(customerDto))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build()
         );
+    }
+
+    @GetMapping
+    ResponseEntity<Principal> getCustomerBySession(Principal principal) {
+        return ResponseEntity.ok(principal);
     }
 
     @GetMapping("/all")
