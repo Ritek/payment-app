@@ -1,6 +1,8 @@
 package com.wojciech.rithaler.prommtchallenge.authentication;
 
 import com.wojciech.rithaler.prommtchallenge.customer.CustomerDetailsService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -24,6 +26,7 @@ import static org.springframework.security.web.context.HttpSessionSecurityContex
 class AuthenticationController {
     private AuthenticationManager authenticationManager;
     private CustomerDetailsService customerDetailsService;
+    private final JwtService jwtService;
 
     @PostMapping("/login")
     public ResponseEntity<UserDetails> login(@Valid @RequestBody LoginDto loginDto, HttpSession session) {
@@ -41,6 +44,28 @@ class AuthenticationController {
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, context);
 
         return ResponseEntity.ok(userDetails);
+    }
+
+    @PostMapping("/jwt/login")
+    public ResponseEntity<String> loginJwt(@Valid @RequestBody LoginDto loginDto, HttpServletResponse response) {
+        final Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginDto.getEmail(),
+                        loginDto.getPassword()
+                )
+        );
+
+        UserDetails userDetails = customerDetailsService.loadUserByUsername(loginDto.getEmail());
+        String jwtToken = jwtService.generateToken(userDetails);
+
+        Cookie cookie = new Cookie("Authorization", jwtToken);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/api");
+        System.out.println(jwtToken);
+        System.out.println(jwtToken.charAt(32));
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok(jwtToken);
     }
 
 
