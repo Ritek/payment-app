@@ -7,6 +7,7 @@ import com.wojciech.rithaler.prommtchallenge.customer.dto.UpdateCustomerDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -22,6 +23,12 @@ class CustomerController {
     ResponseEntity<CustomerDto> createCustomer(@RequestBody NewCustomerDto newCustomerDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(customerService.createCustomer(newCustomerDto));
+    }
+
+    @PostMapping("/admin")
+    ResponseEntity<CustomerDto> createAdmin(@RequestBody NewCustomerDto newCustomerDto) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(customerService.createAdmin(newCustomerDto));
     }
 
     @GetMapping("/{customerId}")

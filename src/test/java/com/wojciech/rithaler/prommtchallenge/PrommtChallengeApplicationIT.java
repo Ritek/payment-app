@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -68,7 +69,7 @@ class PrommtChallengeApplicationIT {
 
 	private void createPayment() throws Exception {
 		NewPaymentDto newPayment = new NewPaymentDto(
-				"email@email.com", "USD", new BigDecimal("19.99")
+				"email@email.com", 1L, "USD", new BigDecimal("19.99")
 		);
 
 		String newPaymentJson = objectMapper.writeValueAsString(newPayment);
@@ -79,6 +80,7 @@ class PrommtChallengeApplicationIT {
 	}
 	@Test
 	@Order(1)
+	@WithMockUser
 	void postEndpointShouldCreatePayment() throws Exception {
 		createPayment();
 
@@ -87,9 +89,10 @@ class PrommtChallengeApplicationIT {
 
 	@Test
 	@Order(2)
+	@WithMockUser
 	void postEndpointShouldNotCreatePaymentWithUnsupportedCurrency() throws Exception {
 		NewPaymentDto newPayment = new NewPaymentDto(
-				"email@email.com", "USD2", new BigDecimal("19.99")
+				"email@email.com", 1L, "USD2", new BigDecimal("19.99")
 		);
 
 		String newPaymentJson = objectMapper.writeValueAsString(newPayment);
@@ -103,9 +106,10 @@ class PrommtChallengeApplicationIT {
 
 	@Test
 	@Order(3)
+	@WithMockUser
 	void postEndpointShouldNotCreatePaymentWithWrongAmount() throws Exception {
 		NewPaymentDto newPayment = new NewPaymentDto(
-				"email@email.com", "USD2", new BigDecimal("0.0")
+				"email@email.com", 1L, "USD2", new BigDecimal("0.0")
 		);
 
 		String newPaymentJson = objectMapper.writeValueAsString(newPayment);
@@ -119,6 +123,7 @@ class PrommtChallengeApplicationIT {
 
 	@Test
 	@Order(4)
+	@WithMockUser
 	void getEndpointShouldRetrievePayment() throws Exception {
 		String url = BASE_URL + "/1";
 
@@ -138,6 +143,7 @@ class PrommtChallengeApplicationIT {
 
 	@Test
 	@Order(5)
+	@WithMockUser
 	void getEndpointShouldReturnNotFound() throws Exception {
 		String url = BASE_URL + "/2";
 		mockMvc.perform(get(url)
@@ -147,6 +153,7 @@ class PrommtChallengeApplicationIT {
 
 	@Test
 	@Order(6)
+	@WithMockUser
 	void putEndpointShouldUpdatePayment() throws Exception {
 		String url = BASE_URL + "/1";
 
@@ -166,6 +173,7 @@ class PrommtChallengeApplicationIT {
 
 	@Test
 	@Order(7)
+	@WithMockUser
 	void putEndpointShouldNotFindPayment() throws Exception {
 		String url = BASE_URL + "/2";
 
@@ -176,6 +184,7 @@ class PrommtChallengeApplicationIT {
 
 	@Test
 	@Order(8)
+	@WithMockUser
 	void deleteEndpointShouldNotFindPayment() throws Exception {
 		String url = BASE_URL + "/2";
 
@@ -186,6 +195,7 @@ class PrommtChallengeApplicationIT {
 
 	@Test
 	@Order(9)
+	@WithMockUser
 	void deleteEndpointShouldNotDeletePaidPayment() throws Exception {
 		String url = BASE_URL + "/1";
 
@@ -199,6 +209,7 @@ class PrommtChallengeApplicationIT {
 
 	@Test
 	@Order(10)
+	@WithMockUser
 	void deleteEndpointShouldDeleteUnpaidPayment() throws Exception {
 		String url = BASE_URL + "/2";
 

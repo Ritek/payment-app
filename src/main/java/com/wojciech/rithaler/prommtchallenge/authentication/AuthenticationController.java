@@ -1,5 +1,6 @@
 package com.wojciech.rithaler.prommtchallenge.authentication;
 
+import com.wojciech.rithaler.prommtchallenge.authentication.dto.LoginDto;
 import com.wojciech.rithaler.prommtchallenge.customer.CustomerDetailsService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -61,11 +62,20 @@ class AuthenticationController {
         Cookie cookie = new Cookie("Authorization", jwtToken);
         cookie.setHttpOnly(true);
         cookie.setPath("/api");
-        System.out.println(jwtToken);
-        System.out.println(jwtToken.charAt(32));
         response.addCookie(cookie);
 
         return ResponseEntity.ok(jwtToken);
+    }
+
+    @PostMapping("/jwt/logout")
+    public ResponseEntity<String> logoutJwt(HttpServletResponse response) {
+        Cookie cookie = new Cookie("Authorization", null);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/api");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok("Logout successful!");
     }
 
 

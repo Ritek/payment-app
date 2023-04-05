@@ -7,6 +7,8 @@ import com.wojciech.rithaler.prommtchallenge.payment.dto.PaymentDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +25,6 @@ import java.util.List;
 @RequestMapping(path = "api/payment")
 public class PaymentController {
     PaymentService paymentService;
-
     @PostMapping
     ResponseEntity<PaymentDto> createPayment(@Valid @RequestBody NewPaymentDto newPaymentDto) {
         System.out.println(newPaymentDto);

@@ -15,14 +15,4 @@ public class PrommtChallengeApplication {
 		SpringApplication.run(PrommtChallengeApplication.class, args);
 	}
 
-	@Bean
-	Clock clock() {
-		return Clock.systemDefaultZone();
-	}
-
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
 }

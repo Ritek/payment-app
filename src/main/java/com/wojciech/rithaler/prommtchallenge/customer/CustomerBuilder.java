@@ -20,4 +20,14 @@ class CustomerBuilder {
             .password(passwordEncoder.encode(newCustomerDTO.getPassword()))
             .build();
     }
+
+    public Customer createAdmin(NewCustomerDto newCustomerDTO) {
+        return Customer.builder()
+                .role(Role.ADMIN)
+                .name(newCustomerDTO.getName())
+                .surname(newCustomerDTO.getSurname())
+                .email(newCustomerDTO.getEmail())
+                .password(passwordEncoder.encode(newCustomerDTO.getPassword()))
+                .build();
+    }
 }

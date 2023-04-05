@@ -10,6 +10,7 @@ import java.util.Optional;
 
 interface CustomerService {
     CustomerDto createCustomer(NewCustomerDto newCustomerDto);
+    CustomerDto createAdmin(NewCustomerDto newCustomerDto);
     Optional<CustomerDto> findCustomerById(Long customerId);
     List<CustomerDto> getAllCustomers();
     Optional<CustomerDto> updateCustomer(UpdateCustomerDto updateCustomerDto);

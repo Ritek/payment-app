@@ -26,6 +26,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public CustomerDto createAdmin(NewCustomerDto newCustomerDto) {
+        Customer customer = customerRepository.save(customerBuilder.createAdmin(newCustomerDto));
+        return customerDtoCreator.createDto(customer);
+    }
+
+    @Override
     public Optional<CustomerDto> findCustomerById(Long customerId) {
         System.out.println(customerRepository.findById(customerId));
         return customerRepository.findById(customerId)
