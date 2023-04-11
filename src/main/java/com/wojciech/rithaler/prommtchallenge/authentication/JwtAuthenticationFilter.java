@@ -1,6 +1,7 @@
 package com.wojciech.rithaler.prommtchallenge.authentication;
 
 import com.wojciech.rithaler.prommtchallenge.customer.CustomerDetailsService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -44,16 +45,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         final String jwt = authCookie.get().getValue();
 
-        if (jwtService.isTokenValid(jwt)) {
-            final String userEmail = jwtService.extractUsername(jwt);
-            UserDetails userDetails = customerDetailsService.loadUserByUsername(userEmail);
+        try {
+            if (jwtService.isTokenValid(jwt)) {
+                final String userEmail = jwtService.extractUsername(jwt);
+                UserDetails userDetails = customerDetailsService.loadUserByUsername(userEmail);
 
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities()
-            );
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities()
+                );
 
-            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authToken);
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        } catch (ExpiredJwtException exception) {
+            Cookie invalidatedCookie = jwtService.createInvalidatedAuthCookie();
+            response.addCookie(invalidatedCookie);
+            filterChain.doFilter(request, response);
+            return;
         }
 
         filterChain.doFilter(request, response);

@@ -49,7 +49,7 @@ class AuthenticationController {
 
     @PostMapping("/jwt/login")
     public ResponseEntity<String> loginJwt(@Valid @RequestBody LoginDto loginDto, HttpServletResponse response) {
-        final Authentication auth = authenticationManager.authenticate(
+        authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getEmail(),
                         loginDto.getPassword()
@@ -57,26 +57,20 @@ class AuthenticationController {
         );
 
         UserDetails userDetails = customerDetailsService.loadUserByUsername(loginDto.getEmail());
-        String jwtToken = jwtService.generateToken(userDetails);
 
-        Cookie cookie = new Cookie("Authorization", jwtToken);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/api");
-        response.addCookie(cookie);
+        // TODO Should cookie methods be in separate service or can stay in JwtService ?
+        Cookie authCookie = jwtService.createAuthCookie(userDetails);
+        response.addCookie(authCookie);
 
-        return ResponseEntity.ok(jwtToken);
+        return ResponseEntity.ok("Login successful!");
     }
 
     @PostMapping("/jwt/logout")
     public ResponseEntity<String> logoutJwt(HttpServletResponse response) {
-        Cookie cookie = new Cookie("Authorization", null);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/api");
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
+        Cookie authCookie = jwtService.createInvalidatedAuthCookie();
+        response.addCookie(authCookie);
 
         return ResponseEntity.ok("Logout successful!");
     }
-
 
 }

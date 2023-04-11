@@ -1,15 +1,10 @@
 package com.wojciech.rithaler.prommtchallenge.payment.controller;
 
-import com.wojciech.rithaler.prommtchallenge.customer.Customer;
-import com.wojciech.rithaler.prommtchallenge.customer.CustomerPrincipal;
 import com.wojciech.rithaler.prommtchallenge.payment.dto.DeletePaymentDto;
 import com.wojciech.rithaler.prommtchallenge.payment.dto.PaymentDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
@@ -27,7 +22,6 @@ public class PaymentController {
     PaymentService paymentService;
     @PostMapping
     ResponseEntity<PaymentDto> createPayment(@Valid @RequestBody NewPaymentDto newPaymentDto) {
-        System.out.println(newPaymentDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.createPayment(newPaymentDto));
     }
 

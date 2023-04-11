@@ -78,6 +78,7 @@ class PrommtChallengeApplicationIT {
 				.content(newPaymentJson))
 				.andExpect(status().isCreated());
 	}
+
 	@Test
 	@Order(1)
 	@WithMockUser

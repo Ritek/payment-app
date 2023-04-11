@@ -50,7 +50,7 @@ public class WebSecurityConfig {
             .and()
         // disable authentication for routes
             .authorizeHttpRequests()
-            .requestMatchers(new AntPathRequestMatcher("/api/customer/**")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/api/customer/**", "POST")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/api/login")).permitAll()
             .requestMatchers(new AntPathRequestMatcher("/api/jwt/**")).permitAll()

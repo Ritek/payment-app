@@ -4,10 +4,12 @@ import com.wojciech.rithaler.prommtchallenge.customer.dto.CustomerDto;
 import com.wojciech.rithaler.prommtchallenge.customer.dto.DeleteCustomerDto;
 import com.wojciech.rithaler.prommtchallenge.customer.dto.NewCustomerDto;
 import com.wojciech.rithaler.prommtchallenge.customer.dto.UpdateCustomerDto;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -31,17 +33,21 @@ class CustomerController {
                 .body(customerService.createAdmin(newCustomerDto));
     }
 
-    @GetMapping("/{customerId}")
-    ResponseEntity<CustomerDto> getCustomer(@PathVariable Long customerId) {
-        return customerService.findCustomerById(customerId).map(
+    @GetMapping
+    ResponseEntity<CustomerDto> getCustomerBySession(Authentication authentication) {
+        Customer customer = (Customer) authentication.getPrincipal();
+        return customerService.findCustomerById(customer.getID()).map(
                 customerDto -> ResponseEntity.status(HttpStatus.OK).body(customerDto))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build()
         );
     }
 
-    @GetMapping
-    ResponseEntity<Principal> getCustomerBySession(Principal principal) {
-        return ResponseEntity.ok(principal);
+    @GetMapping("/{customerId}")
+    ResponseEntity<CustomerDto> getCustomerByParam(@PathVariable Long customerId) {
+        return customerService.findCustomerById(customerId).map(
+                customerDto -> ResponseEntity.status(HttpStatus.OK).body(customerDto))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+        );
     }
 
     @GetMapping("/all")
